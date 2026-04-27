@@ -10,7 +10,7 @@ from legalbenchrag.benchmark_types import QueryResponse, RetrievedSnippet
 from .chunking import sliding_chunk, semantic_chunk, proposition_chunk, ensemble_chunk
 from .search_components import FTHyDE, BM25Idx, rrf
 from .cross_reference import CrossRefGraph
-# Note: QueryPolicy is bypassed in this executable to focus on raw vector performance
+from .query_policy import QueryPolicy, PilotSignals, RouteDecision
 
 class RetrievalMethod:
     async def ingest_document(self, doc): pass
