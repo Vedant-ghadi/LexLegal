@@ -1,6 +1,6 @@
-# TITAN Legal RAG Pipeline ⚖️
+# LexLegal Legal RAG Pipeline ⚖️
 
-The TITAN pipeline is a production-ready, highly parallelized **Retrieval-Augmented Generation (RAG) Architecture** built specifically to combat the structural complexities of dense legal language. Unlike standard general-purpose RAG systems, TITAN integrates dynamic semantic-sliding ensemble chunking, logical heuristic routing, and multi-stage Reciprocal Rank Fusion (RRF) to retrieve elusive contractual spans hidden within massive corporate corpora.
+The LexLegal pipeline is a production-ready, highly parallelized **Retrieval-Augmented Generation (RAG) Architecture** built specifically to combat the structural complexities of dense legal language. Unlike standard general-purpose RAG systems, TITAN integrates dynamic semantic-sliding ensemble chunking, logical heuristic routing, and multi-stage Reciprocal Rank Fusion (RRF) to retrieve elusive contractual spans hidden within massive corporate corpora.
 
 It is heavily optimized for execution on **NVIDIA H100 / A100 GPU infrastructure**, utilizing TF32 precision, batch cross-encoder reranking, and `faiss-gpu` to achieve high-throughput legal query answering across the LegalBench standards.
 
