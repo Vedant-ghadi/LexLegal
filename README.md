@@ -1,6 +1,6 @@
 # LexLegal Legal RAG Pipeline ⚖️
 
-The LexLegal pipeline is a production-ready, highly parallelized **Retrieval-Augmented Generation (RAG) Architecture** built specifically to combat the structural complexities of dense legal language. Unlike standard general-purpose RAG systems, TITAN integrates dynamic semantic-sliding ensemble chunking, logical heuristic routing, and multi-stage Reciprocal Rank Fusion (RRF) to retrieve elusive contractual spans hidden within massive corporate corpora.
+The LexLegal pipeline is a production-ready, highly parallelized **Retrieval-Augmented Generation (RAG) Architecture** built specifically to combat the structural complexities of dense legal language. Unlike standard general-purpose RAG systems, LEX integrates dynamic semantic-sliding ensemble chunking, logical heuristic routing, and multi-stage Reciprocal Rank Fusion (RRF) to retrieve elusive contractual spans hidden within massive corporate corpora.
 
 It is heavily optimized for execution on **NVIDIA H100 / A100 GPU infrastructure**, utilizing TF32 precision, batch cross-encoder reranking, and `faiss-gpu` to achieve high-throughput legal query answering across the LegalBench standards.
 
@@ -56,7 +56,7 @@ flowchart TD
 
 ## 📊 Dataset Working Specs
 
-To guarantee robust cross-domain legal coverage, TITAN is evaluated natively on four wildly differing subsets inherited from the **LegalBench** repository:
+To guarantee robust cross-domain legal coverage, LEX is evaluated natively on four wildly differing subsets inherited from the **LegalBench** repository:
 
 | Dataset Segment | Domain Focus | Average Doc Token Length | Extraction Challenge Profile | Rationale for Inclusion |
 | :--- | :--- | :--- | :--- | :--- |
@@ -71,7 +71,7 @@ To guarantee robust cross-domain legal coverage, TITAN is evaluated natively on 
 
 Traditional RAG systems utilize static configurations for `top_k` and probe settings. In a resource-constrained production environment handling millions of queries, launching LLM-driven HyDE for every request causes massive GPU bottlenecks.
 
-To resolve this, TITAN implements an instantaneous **O(1) algorithmic Signal Router**. It computes a scalar complexity score $S_q \in [0.0, 1.0]$. The mathematical formulation leverages empirical weights calibrated via logistic regression against historical inference logs:
+To resolve this, LEX implements an instantaneous **O(1) algorithmic Signal Router**. It computes a scalar complexity score $S_q \in [0.0, 1.0]$. The mathematical formulation leverages empirical weights calibrated via logistic regression against historical inference logs:
 
 $$ S_q = \min\left(1.0, \quad 0.40 \left(\frac{L}{150}\right) + 0.35 \left(\frac{D_k}{\max(1, L)}\right) + 0.25 (V_{legal}) \right) $$
 
@@ -88,7 +88,7 @@ $$ S_q = \min\left(1.0, \quad 0.40 \left(\frac{L}{150}\right) + 0.35 \left(\frac
 
 ## 🧪 Ablation Studies & Statistical Run-Down
 
-To empirically validate the structural decisions made in building TITAN, an extensive ablation sweep was run across the datasets. The grid isolates the respective impact of Chunking Architectures and Cross-Encoder depth algorithms.
+To empirically validate the structural decisions made in building LEX, an extensive ablation sweep was run across the datasets. The grid isolates the respective impact of Chunking Architectures and Cross-Encoder depth algorithms.
 
 We recorded Mean Average Precision (mAP@10) and F1/Recall. mAP is prioritized because retrieving the exact governing clause into the Top-3 ranks heavily minimizes context-window hallucination in the final LLM response.
 
@@ -100,7 +100,7 @@ We recorded Mean Average Precision (mAP@10) and F1/Recall. mAP is prioritized be
 | **4. Ensemble Core** | Sliding + Semantic | 100 | 100 | 0.44 | 0.456 | Highly efficient overlap captures bounding context accurately. |
 | **5. Ensemble + Rerank** | Sliding + Semantic | 150 | 75 (Cross Encoder) | 0.51 | 0.530 | The BGE Cross-Encoder resolves the vast majority of false positive semantic overlaps. |
 | **6. Ensmbl + RR + HyDE** | Sliding + Semantic | 300 | 60 | 0.68 | 0.610 | Incredible jump in performance for CUAD due to synthetic query projections. |
-| **7. TITAN ADAPTIVE** | **Dynamic** | **Dynamic** | **Dynamic** | **0.82** | **0.795** | Intelligently blends pipelines 5 and 6, capping processing overhead while scaling $K=300$ only for the trickiest queries. |
+| **7. LEX ADAPTIVE** | **Dynamic** | **Dynamic** | **Dynamic** | **0.82** | **0.795** | Intelligently blends pipelines 5 and 6, capping processing overhead while scaling $K=300$ only for the trickiest queries. |
 
 *Hardware Constraints:* The test runs above executed over H100 PCIE graphics. Batching the Cross-Encoder at $128$ was paramount to achieving $0.82$ mAP without causing `CUDA_OOM` faults during concurrent benchmark arrays.
 
@@ -111,7 +111,7 @@ We recorded Mean Average Precision (mAP@10) and F1/Recall. mAP is prioritized be
 Ensure your environment is running Python 3.10+ and you possess compatible GPU resources.
 
 ```bash
-# 1. Install specific TITAN hardware dependencies
+# 1. Install specific LEX hardware dependencies
 pip install -r requirements.txt
 
 # 2. Re-train the proprietary LegalBench FLAN-T5 adapters locally
